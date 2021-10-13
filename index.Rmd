@@ -73,3 +73,22 @@ felidae %>%
   datatable()
 ```
 
+# Gráficos
+
+## Estacionalidad
+
+```{r grafico-estacionalidad}
+# Gráfico de estacionalidad
+felidae %>%
+  st_drop_geometry() %>%
+  group_by(mes = format(as.Date(eventDate, "%Y-%m-%d"), "%m")) %>%
+  summarize(suma_registros = n()) %>%
+  filter(!is.na(mes))  %>%
+  plot_ly(x = ~ mes,
+          y = ~ suma_registros,
+          type="scatter", mode="markers", fill = "tozeroy", fillcolor = "green") %>%
+  layout(title = "Estacionalidad",
+         xaxis = list(title = "Mes"),
+         yaxis = list(title = "Cantidad de registros"))
+```
+
