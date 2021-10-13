@@ -1,0 +1,67 @@
+---
+title: "Felidae (felinos) de Costa Rica"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Carga de paquetes y de datos
+
+```{r paquetes, warning=FALSE, message=FALSE}
+# Paquete para manipulación de datos
+library(dplyr)
+
+# Paquete para manejo de datos vectoriales
+library(sf)
+
+# Paquetes para manejo de datos raster
+library(terra)
+
+# Paquete para manejo de tablas
+library(DT)
+
+# Paquetes para graficación
+library(ggplot2)
+library(plotly)
+
+# Paquete para mapas interactivos
+library(leaflet)
+```
+
+```{r datos, warning=FALSE, message=FALSE}
+# Lectura de una capa vectorial (GeoJSON) de provincias de Costa Rica
+provincias <-
+  st_read(
+    "https://github.com/tpb728O-programaciongeoespacialr/2021ii/raw/main/datos/ign/delimitacion-territorial-administrativa/provincias.geojson",
+    quiet = TRUE
+  )
+
+# Transformación del CRS del objeto provincias
+provincias <-
+  provincias %>%
+  st_transform(4326)
+
+# Lectura de un archivo CSV con registros de presencia de felinos en Costa Rica
+felidae <-
+  st_read(
+    "/vsicurl/https://raw.githubusercontent.com/tpb728O-programaciongeoespacialr/2021ii/main/datos/gbif/felidae.csv",
+    options = c(
+      "X_POSSIBLE_NAMES=decimalLongitude",
+      "Y_POSSIBLE_NAMES=decimalLatitude"
+    ),
+    quiet = TRUE
+  )
+
+# Asignación de un CRS al objeto felidae
+st_crs(felidae) <- 4326
+
+# Lectura de una capa raster de altitud
+altitud <-
+  rast(
+    "/vsicurl/https://raw.githubusercontent.com/tpb728O-programaciongeoespacialr/2021ii/master/datos/worldclim/altitud.tif"
+  )
+```
+
+# Tabla
