@@ -103,9 +103,38 @@ felidae %>%
   filter(anio >= 2011) %>%
   plot_ly(x = ~ anio,
           y = ~ suma_registros,
-          type="bar", color = "green") %>%
+          type="bar", color = I("blue")) %>%
   layout(title = "Historial",
          xaxis = list(title = "Año"),
          yaxis = list(title = "Cantidad de registros"))
+```
+
+# Mapa
+
+```{r mapa, warning=FALSE}
+# Conversión del objeto altitud a la clase RasterLayer
+altitud_rl <- raster::raster(altitud)
+
+# Mapa leaflet básico con capas de provincias y registros de presencia de felinos
+leaflet() %>%
+  addTiles() %>%
+  addRasterImage(
+    altitud_rl, 
+    opacity = 0.6
+  ) %>%    
+  addPolygons(
+    data = provincias,
+    color = "black",
+    fillColor = "transparent",
+    stroke = TRUE,
+    weight = 1.0,
+  ) %>%
+  addCircleMarkers(
+    data = felidae,
+    stroke = F,
+    radius = 4,
+    fillColor = 'orange',
+    fillOpacity = 1
+  )
 ```
 
