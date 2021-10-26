@@ -34,7 +34,7 @@ library(leaflet)
 # Lectura de una capa vectorial (GeoJSON) de provincias de Costa Rica
 provincias <-
   st_read(
-    "https://github.com/tpb728O-programaciongeoespacialr/2021ii/raw/main/datos/ign/delimitacion-territorial-administrativa/provincias.geojson",
+    "https://github.com/tpb728O-programaciongeoespacialr/2021ii/raw/main/datos/ign/delimitacion-territorial-administrativa/provincias-simplificadas_100m.geojson",
     quiet = TRUE
   )
 
